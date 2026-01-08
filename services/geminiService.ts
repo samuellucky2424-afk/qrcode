@@ -1,6 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = {
+  models: {
+    generateContent: async () => ({ text: "Delicious freshly prepared meal." })
+  }
+};
 
 export const generateMenuDescription = async (itemName: string, category: string): Promise<string> => {
   try {
