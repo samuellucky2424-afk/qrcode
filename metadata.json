@@ -1,0 +1,5 @@
+{
+  "name": "NaijaBites Ordering System",
+  "description": "A responsive food ordering app with QR code support, conditional delivery logic, and a real-time admin dashboard.",
+  "requestFramePermissions": []
+}
