@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Wand2, Loader2 } from 'lucide-react';
+import { Plus, Edit2, Trash2 } from 'lucide-react';
 import { db } from '../services/mockDatabase';
 import { MenuItem, Category } from '../types';
 import { formatCurrency } from '../components/Formatters';
-import { generateMenuDescription } from '../services/geminiService';
 
 const AdminMenu: React.FC = () => {
   const [items, setItems] = useState<MenuItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState<Partial<MenuItem>>({
@@ -37,14 +35,6 @@ const AdminMenu: React.FC = () => {
       });
     }
     setIsModalOpen(true);
-  };
-
-  const handleGenerateDescription = async () => {
-    if (!formData.name) return alert("Please enter a name first.");
-    setIsGenerating(true);
-    const desc = await generateMenuDescription(formData.name, formData.category || 'Food');
-    setFormData(prev => ({ ...prev, description: desc }));
-    setIsGenerating(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -173,18 +163,7 @@ const AdminMenu: React.FC = () => {
               </div>
 
               <div>
-                <div className="flex justify-between items-center mb-1">
-                  <label className="block text-sm font-medium text-gray-700">Description</label>
-                  <button 
-                    type="button" 
-                    onClick={handleGenerateDescription}
-                    disabled={isGenerating || !formData.name}
-                    className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded flex items-center gap-1 hover:bg-purple-200 disabled:opacity-50"
-                  >
-                    {isGenerating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Wand2 className="w-3 h-3" />}
-                    AI Generate
-                  </button>
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea required rows={3} className="w-full border rounded-lg p-2 text-sm" 
                   value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
               </div>
