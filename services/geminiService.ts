@@ -1,9 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI((import.meta as any).env.VITE_GEMINI_API_KEY || "");
-
 export const generateMenuDescription = async (itemName: string, category: string): Promise<string> => {
   try {
+    const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || "";
+    if (!apiKey) {
+      return "A classic dish prepared with fresh ingredients.";
+    }
+    const ai = new GoogleGenAI(apiKey);
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `Write a short, appetizing, 2-sentence description for a menu item named "${itemName}" in the category "${category}". 
