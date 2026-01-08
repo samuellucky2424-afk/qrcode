@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY || "");
+const ai = new GoogleGenAI((import.meta as any).env.VITE_GEMINI_API_KEY || "");
 
 export const generateMenuDescription = async (itemName: string, category: string): Promise<string> => {
   try {
